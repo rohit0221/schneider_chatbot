@@ -2,6 +2,7 @@ import streamlit as st
 from chatbotbasic import conversational_rag_chain
 from schneider_chatbot.chatbot.langsmith import initialize_langsmith
 from schneider_chatbot.chatbot.session_management import get_session_history, generate_session_id
+from streamlit_js_eval import get_cookie, set_cookie
 
 initialize_langsmith()
 
@@ -20,12 +21,17 @@ except FileNotFoundError:
 
 st.markdown("Ask me anything about Schneider Electric Installation process. I am here to help!")
 
-# ✅ Ensure session_id is stored in Streamlit's session state
-if "session_id" not in st.session_state:
-    st.session_state.session_id = generate_session_id()
+# ✅ Ensure session_id is stored using cookies for persistence across containers
+session_id = get_cookie("chatbot_session")
+
+if not session_id:
+    session_id = generate_session_id()
+    set_cookie("chatbot_session", session_id)
+
+st.session_state.session_id = session_id  # Store in Streamlit session state
 
 # ✅ Retrieve Redis-based chat history
-history = get_session_history(st.session_state.session_id)
+history = get_session_history(session_id)
 
 # ✅ Function to add message to Redis chat history
 def add_message(role, content):
@@ -39,7 +45,7 @@ def generate_response(user_input):
     try:
         response = conversational_rag_chain.invoke(
             {"input": user_input},
-            config={"configurable": {"session_id": st.session_state.session_id}},
+            config={"configurable": {"session_id": session_id}},
         )
         return response["answer"]
     except Exception as e:
