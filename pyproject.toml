@@ -1,0 +1,27 @@
+[project]
+name = "schneider-chatbot"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "rohit0221",email = "rohit0221@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "langchain (>=0.3.18,<0.4.0)",
+    "ipykernel (>=6.29.5,<7.0.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "langchain-openai (>=0.3.4,<0.4.0)",
+    "langchain-community (>=0.3.17,<0.4.0)",
+    "llama-index-indices-managed-llama-cloud (>=0.6.4,<0.7.0)",
+    "llama-index-llms-openai (>=0.3.18,<0.4.0)",
+    "streamlit (>=1.42.0,<2.0.0)",
+    "langchain-google-vertexai (>=2.0.13,<3.0.0)",
+    "redis (>=5.2.1,<6.0.0)",
+    "langchain-redis (>=0.1.2,<0.2.0)",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
